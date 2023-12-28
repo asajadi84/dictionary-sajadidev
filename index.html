@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SajadiDev Dictionary</title>
+</head>
+<body>
+    <style>
+        table {
+            margin-top: 24px;
+        }
+        td {
+            border: 1px solid black;
+            padding: 16px;
+        }
+    </style>
+    <div id="search">
+        Loading...
+    </div>
+    <div id="result"></div>
+    
+    <script src="./wordset/a.js"></script>
+    <script src="./wordset/b.js"></script>
+    <script src="./wordset/c.js"></script>
+    <script src="./wordset/d.js"></script>
+    <script src="./wordset/e.js"></script>
+    <script src="./wordset/f.js"></script>
+    <script src="./wordset/g.js"></script>
+    <script src="./wordset/h.js"></script>
+    <script src="./wordset/i.js"></script>
+    <script src="./wordset/j.js"></script>
+    <script src="./wordset/k.js"></script>
+    <script src="./wordset/l.js"></script>
+    <script src="./wordset/m.js"></script>
+    <script src="./wordset/n.js"></script>
+    <script src="./wordset/o.js"></script>
+    <script src="./wordset/p.js"></script>
+    <script src="./wordset/q.js"></script>
+    <script src="./wordset/r.js"></script>
+    <script src="./wordset/s.js"></script>
+    <script src="./wordset/t.js"></script>
+    <script src="./wordset/u.js"></script>
+    <script src="./wordset/v.js"></script>
+    <script src="./wordset/w.js"></script>
+    <script src="./wordset/x.js"></script>
+    <script src="./wordset/y.js"></script>
+    <script src="./wordset/z.js"></script>
+    <script src="./wordset/misc.js"></script>
+    <script>
+        let wordsetData = {...wordsetA, ...wordsetB, ...wordsetC, ...wordsetD, ...wordsetE, ...wordsetF, ...wordsetG,
+            ...wordsetH, ...wordsetI, ...wordsetJ, ...wordsetK, ...wordsetL, ...wordsetM, ...wordsetN, ...wordsetO,
+            ...wordsetP, ...wordsetQ, ...wordsetR, ...wordsetS, ...wordsetT, ...wordsetU, ...wordsetV, ...wordsetW,
+            ...wordsetX, ...wordsetY, ...wordsetZ, ...wordsetMisc};
+
+        let datalistHmtl = `<datalist id="all-words">`;
+        Object.keys(wordsetData).forEach(function(item){
+            datalistHmtl += `<option value="${item}" />`;
+        });
+        datalistHmtl += `</datalist>`;
+
+        document.getElementById("search").innerHTML = datalistHmtl + `<input type="text" id="input" list="all-words" onkeyup="searchWord()">`;
+        
+        function searchWord(){
+            let term = document.getElementById("input").value;
+            let termLowerCase = term.toLowerCase();
+            //claer the result fragment
+            document.getElementById("result").innerHTML = "";
+            let foundItem = wordsetData[term];// || wordsetData[termLowerCase];
+
+            let resultHtml = `<h1>${term}</h1>`;
+
+            if(foundItem){
+                resultHtml += `
+                <table>
+                    <tr>
+                        <td>def</td>
+                        <td>speech_part</td>
+                        <td>synonyms</td>
+                        <td>example</td>
+                    </tr>
+                `;
+
+                for(let i = 0; i < foundItem.meanings.length; i++){
+                    resultHtml += `
+                    <tr>
+                        <td>${foundItem.meanings[i].def}</td>
+                        <td>${foundItem.meanings[i].speech_part}</td>
+                        <td>${foundItem.meanings[i].synonyms ? foundItem.meanings[i].synonyms : "-"}</td>
+                        <td>${foundItem.meanings[i].example ? foundItem.meanings[i].example : "-"}</td>
+                    </tr>
+                    `;
+                }
+
+                resultHtml += `</table>`;
+                document.getElementById("result").innerHTML = resultHtml;
+            }else{
+                document.getElementById("result").innerHTML = `<p>Not found</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
